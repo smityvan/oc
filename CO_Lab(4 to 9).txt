@@ -1,0 +1,263 @@
+Experiment-4: (binary to grey)
+
+begin
+g(3)<=b(3);
+g(2)<=b(2) xor b(3);
+g(1)<=b(1) xor b(2);
+g(0)<=b(0) xor b(1);
+end Dataflow;
+
+
+Experiment-4: (grey to binary)
+
+begin
+b(3)<=g(3);
+b(2)<=b(3) xor g(2);
+b(1)<=b(2) xor g(1);
+b(0)<=b(1) xor g(0);
+end Dataflow;
+
+
+
+Experiment-5: (3x8 decoder using when clause)
+
+begin
+d<="00000001" when (a="000" and e='1') else
+   "00000010" when (a="001" and e='1') else
+   "00000100" when (a="010" and e='1') else
+   "00001000" when (a="011" and e='1') else
+   "00010000" when (a="100" and e='1') else
+   "00100000" when (a="101" and e='1') else
+   "01000000" when (a="110" and e='1') else
+   "10000000" when (a="111" and e='1') else
+   "00000000" when (e='0');
+end Dataflow;
+
+
+
+Experiment-5: (3x8 decoder using case statement)
+
+begin
+Process(A,E)
+begin
+if(E='1') then
+case A is
+when "000" => D<="0000 0001";
+when "001" => D<="0000 0010";
+when "010" => D<="0000 0100";
+when "011" => D<="0000 1000";
+when "100" => D<="0001 0000";
+when "101" => D<="0010 0000";
+when "110" => D<="0100 0000";
+when "111" => D<="1000 0000";
+end case
+else
+D<="00000000";
+end if;
+end process;	
+end Behavioral;
+
+
+
+
+Experiment-5:( 4x16 decoder using case statement)
+
+begin
+Process(A,E)
+begin
+if(E='1') then
+case A is
+when "0000" => D<="0000 0000 0000 0001";
+when "0001" => D<="0000 0000 0000 0010";
+when "0010" => D<="0000 0000 0000 0100";
+when "0011" => D<="0000 0000 0000 1000";
+when "0100" => D<="0000 0000 0001 0000";
+when "0101" => D<="0000 0000 0010 0000";
+when "0110" => D<="0000 0000 0100 0000";
+when "0111" => D<="0000 0000 1000 0000";
+when "1000" => D<="0000 0001 0000 0000";
+when "1001" => D<="0000 0010 0000 0000";
+when "1010" => D<="0000 0100 0000 0000";
+when "1011" => D<="0000 1000 0000 0000";
+when "1100" => D<="0001 0000 0000 0000";
+when "1101" => D<="0010 0000 0000 0000";
+when "1110" => D<="0100 0000 0000 0000";
+when others => D<="1000 0000 0000 0000";
+end case
+else
+D<="0000 0000 0000 0000";
+end if;
+end process;	
+end Behavioral; 
+
+
+
+Experiment-6:(8x1 multiplexer using case statement):
+
+begin
+process(s,i)
+begin
+case s is
+when "000" => y<=i(0);
+when "001" => y<=i(1);
+when "010" => y<=i(2);
+when "011" => y<=i(3);
+when "100" => y<=i(4);
+when "101" => y<=i(5);
+when "110" => y<=i(6);
+when others => y<=i(7);
+end case
+end process
+end Behavioral;
+
+
+
+Experiment-6:(8x1 multiplexer using when clause):
+
+begin
+y<=i(0) when (s="000") else
+   i(1) when (s="001") else
+   i(2) when (s="010") else
+   i(3) when (s="011") else
+   i(4) when (s="100") else
+   i(5) when (s="101") else
+   i(6) when (s="110") else
+   i(7);
+end Behavioral;
+
+
+Experiment-6(16x1 multiplexer using when clause):
+
+begin
+y<=i(0) when (s="0000") else
+   i(1) when (s="0001") else
+   i(2) when (s="0010") else
+   i(3) when (s="0011") else
+   i(4) when (s="0100") else
+   i(5) when (s="0101") else
+   i(6) when (s="0110") else
+   i(7) when (s="0111") else
+   i(8) when (s="1000") else
+   i(9) when (s="1001") else
+   i(10) when (s="1010") else
+   i(11) when (s="1011") else
+   i(12) when (s="1100") else
+   i(13) when (s="1101") else
+   i(14) when (s="1110") else
+   i(15);
+end Behavioral;
+
+
+
+Experiment-7(SR FLIP FLOP CODE):
+
+begin
+process(CLK)
+variable tmp:STD_LOGIC;
+begin
+if(CLK='1' and CLK'EVENT) then
+if(S='0' and R='0') then 
+tmp:=tmp;
+elsif(S='0' and R='1') then 
+tmp:='0'
+elsif(S='1' and R='1') then 
+tmp:='Z'
+else
+tmp:='1'
+end if;
+end if;
+Q<=tmp;
+QBAR<= not tmp;
+end process;
+end Behavioral;
+
+
+
+Experiment-7(D flip flop code):
+
+begin
+process(clk)
+begin
+if(clk='1' and clk'EVENT) then
+q<=d;
+end if;
+end process;
+end Behavioral;
+
+
+Experiment-7(Jk Flip Flop code):
+
+begin
+process(clock)
+variable TMP:STD_LOGIC;
+begin
+if(clock='1') then
+if(J='0' and K='0') then 
+TMP:=TMP;
+elsif(J='0' and K='1') then 
+TMP:=not TMP;
+elsif(J='0' and K='1') then 
+TMP:='0'
+else
+TMP:='1'
+end if;
+end if;
+Q<=TMP;
+QB<= not TMP;
+end process;
+end Behavioral;
+
+
+Experiment-7(T flip flop code):
+
+begin
+process(c)
+begin
+if(c='1' and c'EVENT) then
+if t='0' then 
+qn<=qp;
+elsif t='1' then
+qn<=not qp;
+end if;
+end if;
+end process;
+end Behavioral;
+
+
+Experiment-8
+
+begin
+process(s)
+begin
+case s is
+ when "000" => r0<=dr;
+ when "001" => r1<=dr;
+ when "010" => r2<=dr;
+ when "011" => r3<=dr;
+ when "100" => dr<=r0;
+ when "101" => dr<=r1;
+ when "110" => dr<=r2;
+ when others => dr<=r3;
+end case;
+end process;
+end Behavioral;
+
+
+
+Experiment-9
+
+begin
+process(s)
+begin
+case s is 
+ when "000" => result<= r1+r2;
+ when "001" => result<= r1-r2;
+ when "010" => result<= r1+1;
+ when "011" => result<= r2-1;
+ when "100" => result<= r1 or r2;
+ when "101" => result<= r1 and r2;
+ when "110" => result<= r1 nor r2;
+ when others => result<= r1 nand r2;
+end case;
+end process;
+end Behavioral;
